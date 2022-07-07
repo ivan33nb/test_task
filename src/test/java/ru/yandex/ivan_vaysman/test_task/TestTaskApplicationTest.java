@@ -65,6 +65,7 @@ class TestTaskApplicationTest {
         HttpEntity<String> requestUpdate = new HttpEntity<>(jsonUpdateReq, headers);
 
         ResponseEntity<String> updateWithAuth = restTemplate.postForEntity(URI.create(UPDATE_POMOFOCUS), requestUpdate, String.class);
+        LOGGER.info("response body - {}", updateWithAuth.getBody());
         Assertions.assertEquals(updateWithAuth.getStatusCode(), HttpStatus.OK);
     }
 }
