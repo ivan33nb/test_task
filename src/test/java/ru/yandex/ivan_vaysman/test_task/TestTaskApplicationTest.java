@@ -49,18 +49,19 @@ class TestTaskApplicationTest {
         ResponseEntity<String> responseAuth = restTemplate.postForEntity(URI.create(LOGIN_POMOFOCUS), requestAuth, String.class);
         Assertions.assertEquals(responseAuth.getStatusCode(), HttpStatus.OK);
 
-        String token = null;
+
+        StringBuilder stringBuilder = new StringBuilder();
 
         try {
             JSONObject jsonObject = new JSONObject(responseAuth.getBody());
-            token = jsonObject.getString("token");
+            stringBuilder.append(jsonObject.getString("token"));
         } catch (JSONException e) {
             LOGGER.error("can't deserialize token from response");
         }
 
-        Assertions.assertNotNull(token);
+        Assertions.assertFalse(stringBuilder.isEmpty());
 
-        headers.set("Authorization", token);
+        headers.set("Authorization", stringBuilder.toString());
         HttpEntity<String> requestUpdate = new HttpEntity<>(jsonUpdateReq, headers);
 
         ResponseEntity<String> updateWithAuth = restTemplate.postForEntity(URI.create(UPDATE_POMOFOCUS), requestUpdate, String.class);
